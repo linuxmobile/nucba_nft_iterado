@@ -9,7 +9,7 @@
 // const categories = document.querySelector(".categories");
 // const categoriesList = document.querySelectorAll(".category");
 // const btnLoad = document.querySelector(".btn-load");
-// const buyBtn = document.querySelector(".btn-buy");
+const buyBtn = document.querySelector(".btn-buy");
 const cartBtn = document.querySelector(".cart-label");
 const barsBtn = document.querySelector(".menu-label");
 const cartMenu = document.querySelector(".cart");
@@ -49,14 +49,50 @@ const closeOnOverlayClick = () => {
 };
 
 
+// █▀▀ ▄▀█ █▀█ ▀█▀   █░░ █▀█ █▀▀ █ █▀▀
+// █▄▄ █▀█ █▀▄ ░█░   █▄▄ █▄█ █▄█ █ █▄▄
+
+// funcion para renderizar un producto en el carrito
+const renderCartProduct = (cartProduct) => {
+  const { id, name, bid, img, quantity } = cartProduct;
+  return `    
+  <div class="cart-item">
+    <img src=${img} alt="Nft del carrito" />
+    <div class="item-info">
+      <h3 class="item-title">${name}</h3>
+      <p class="item-bid">Current bid</p>
+      <span class="item-price">${bid} ETH</span>
+    </div>
+    <div class="item-handler">
+      <span class="quantity-handler down" data-id=${id}>-</span>
+      <span class="item-quantity">${quantity}</span>
+      <span class="quantity-handler up" data-id=${id}>+</span>
+    </div>
+  </div>`;
+};
+
+// si el carrito está vacio mostramos el mensaje de carrito vacio
+// si hay productos en el carrito, lo renderiza
+const renderCart = () => {
+  if (cart.length === 0) {
+    productsCart.innerHTML = `<p class="empty-msg">No hay productos en el carrito.</p>`;
+    return;
+  }
+  productsCart.innerHTML = cart.map(renderCartProduct).join("");
+};
+
+
+
+
+
+
 // █ █▄░█ █ ▀█▀ █ ▄▀█ █░░ █ ▀█ █▀▀ █▀█
 // █ █░▀█ █ ░█░ █ █▀█ █▄▄ █ █▄ ██▄ █▀▄
-// creamos la funcion para mostrar el menu y el carrito
-const clickEvent = () => {
+// creamos la funcion encargada de inizializar todo
+const initCart = () => {
     cartBtn.addEventListener("click", toggleCart);
     barsBtn.addEventListener("click", toggleMenu);
     overlay.addEventListener("click", closeOnOverlayClick);
-  }
+};
 
-// ejecutamos la funcion clickEvent
-clickEvent();
+initCart();
