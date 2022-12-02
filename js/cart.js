@@ -81,6 +81,24 @@ const renderCart = () => {
   productsCart.innerHTML = cart.map(renderCartProduct).join("");
 };
 
+// si el carrito está vacio desactivamos los botones de comprar y eliminar
+// si hay productos en el carrito, los activamos utilizando la clase disabled
+const disableBtn = (btn) => {
+  if (!cart.length) {
+    btn.classList.add("disabled");
+  } else {
+    btn.classList.remove("disabled");
+  }
+};
+
+// funcion para obtener el total de la compra y mostrarlo solo con dos unideades decimales
+const getTotal = () => {
+  const totalCart = cart.reduce((acc, product) => {
+    return acc + product.bid * product.quantity;
+  }, 0);
+  total.innerHTML = totalCart.toFixed(2);
+};
+
 
 
 
