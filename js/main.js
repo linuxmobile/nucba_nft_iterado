@@ -99,6 +99,34 @@ const productsController = async () => {
     console.log (dividedProducts);
 }
 
+// █▀▀ █ █░░ ▀█▀ █▀▀ █▀█   █░░ █▀█ █▀▀ █ █▀▀
+// █▀░ █ █▄▄ ░█░ ██▄ █▀▄   █▄▄ █▄█ █▄█ █ █▄▄
+
+// si clickeamos una categoria ocultamos el boton ver mas
+// con la classlist "hidden"
+const filterProducts = async (category) => {
+    const data = await getData();
+    const filteredProducts = data.filter(product => product.category === category);
+    products.innerHTML = "";
+    filteredProducts.forEach(product => {
+        products.innerHTML += renderProduct(product);
+    });
+    btnLoad.classList.add("hidden");
+}
+
+// al clickear una categoria cambiamos el estado a "active"
+// y filtramos los productos por categoria usando la funcion "filterProducts"
+const filterController = async () => {
+    categoriesList.forEach(category => {
+        category.addEventListener("click", () => {
+            categoriesList.forEach(category => category.classList.remove("active"));
+            category.classList.add("active");
+            filterProducts(category.dataset.category);
+        });
+    });
+}
+filterController();
+
 
 
 
