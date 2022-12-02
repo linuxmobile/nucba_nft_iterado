@@ -22,6 +22,14 @@ const deleteBtn = document.querySelector(".btn-delete");
 // █▀▄▀█ █▀▀ █▄░█ █░█   █░░ █▀█ █▀▀ █ █▀▀
 // █░▀░█ ██▄ █░▀█ █▄█   █▄▄ █▄█ █▄█ █ █▄▄
 
+// creamos variable para obtener el producto del localstorage
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Función para guardar el carrito en el localStorage
+const saveLocalStorage = (cartList) => {
+  localStorage.setItem("cart", JSON.stringify(cartList));
+};
+
 // creamos funcion toggleMenu y toggleCart para mostrar y ocultar los menus
 const toggleMenu = () => {
     barsMenu.classList.toggle("open-menu");
@@ -76,13 +84,13 @@ const renderCartProduct = (cartProduct) => {
 const renderCart = () => {
   if (cart.length === 0) {
     productsCart.innerHTML = `<p class="empty-msg">No hay productos en el carrito.</p>`;
-    return;
+  } else {
+    productsCart.innerHTML = cart.map(renderCartProduct).join("");
   }
-  productsCart.innerHTML = cart.map(renderCartProduct).join("");
 };
 
-// si el carrito está vacio desactivamos los botones de comprar y eliminar
-// si hay productos en el carrito, los activamos utilizando la clase disabled
+// si el carrito está vacio desactivar botones de comprar y eliminar
+// si hay productos en el carrito activar botones de comprar y eliminar
 const disableBtn = (btn) => {
   if (!cart.length) {
     btn.classList.add("disabled");
@@ -102,8 +110,6 @@ const getTotal = () => {
 
 
 
-
-
 // █ █▄░█ █ ▀█▀ █ ▄▀█ █░░ █ ▀█ █▀▀ █▀█
 // █ █░▀█ █ ░█░ █ █▀█ █▄▄ █ █▄ ██▄ █▀▄
 // creamos la funcion encargada de inizializar todo
@@ -111,6 +117,9 @@ const initCart = () => {
     cartBtn.addEventListener("click", toggleCart);
     barsBtn.addEventListener("click", toggleMenu);
     overlay.addEventListener("click", closeOnOverlayClick);
+    // mostrar botones desactivados
+    disableBtn(buyBtn);
+    disableBtn(deleteBtn);
 };
 
 initCart();
