@@ -102,31 +102,38 @@ const productsController = async () => {
 // █▀▀ █ █░░ ▀█▀ █▀▀ █▀█   █░░ █▀█ █▀▀ █ █▀▀
 // █▀░ █ █▄▄ ░█░ ██▄ █▀▄   █▄▄ █▄█ █▄█ █ █▄▄
 
-// si clickeamos una categoria ocultamos el boton ver mas
-// con la classlist "hidden"
+// creamos la funcion para cambiar el estado de la categoria a "active"
+// y mostrar los productos de la categoria seleccionada
 const filterProducts = async (category) => {
     const data = await getData();
-    const filteredProducts = data.filter(product => product.category === category);
     products.innerHTML = "";
+    const filteredProducts = data.filter(product => product.category === category);
     filteredProducts.forEach(product => {
         products.innerHTML += renderProduct(product);
     });
-    btnLoad.classList.add("hidden");
 }
 
-// al clickear una categoria cambiamos el estado a "active"
-// y filtramos los productos por categoria usando la funcion "filterProducts"
+// si seleccionamos una categoria, ejecutamos la funcion filterProducts y agregamos la clase "active"
+// y ocultamos el boton "ver mas" con la clase "hidden"
+// si volvemos al boton "todas" mostramos de nuevo con productsController() todos los productos
+// removemos del productsController() los productos que ya estan en el dom (los primeros 3)
+//y removemos " hidden" del boton "ver mas"
 const filterController = async () => {
     categoriesList.forEach(category => {
         category.addEventListener("click", () => {
+            if (category.dataset.category === "all") {
+                productsController();
+                btnLoad.classList.remove("hidden");
+                products.innerHTML = "";
+            } else {
+                filterProducts(category.dataset.category);
+                btnLoad.classList.add("hidden");
+            }
             categoriesList.forEach(category => category.classList.remove("active"));
             category.classList.add("active");
-            filterProducts(category.dataset.category);
         });
     });
 }
-filterController();
-
 
 
 
@@ -135,6 +142,7 @@ filterController();
 // creamos la funcion init para mostrar los productos en el dom
 const init = () => {
     productsController();
+    filterController();
 }
 
 // llamamos al init
