@@ -144,6 +144,19 @@ const showSuccessModal = (msg) => {
   }, 1500);
 };
 
+// funcion para vaciar carrito al hacer click en el "btn-delete"
+// escuchar el evento click en el boton de eliminar
+const deleteCart = () => {
+  if (!cart.length) return;
+  cart = [];
+  saveLocalStorage(cart);
+  renderCart();
+  showTotal();
+  showSuccessModal("Carrito vaciado");
+  disableBtn(buyBtn);
+  disableBtn(deleteBtn);
+};
+
 // █ █▄░█ █ ▀█▀ █ ▄▀█ █░░ █ ▀█ █▀▀ █▀█
 // █ █░▀█ █ ░█░ █ █▀█ █▄▄ █ █▄ ██▄ █▀▄
 // creamos la funcion encargada de inizializar todo
@@ -154,6 +167,7 @@ const initCart = () => {
     document.addEventListener("click", addProduct);
     document.addEventListener("click", renderCart);
     document.addEventListener("DOMContentLoaded", showTotal);
+    deleteBtn.addEventListener("click", deleteCart);
     // mostrar botones desactivados
     disableBtn(buyBtn);
     disableBtn(deleteBtn);
