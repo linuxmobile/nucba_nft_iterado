@@ -99,12 +99,14 @@ const disableBtn = (btn) => {
   }
 };
 
-// funcion para obtener el total de la compra y mostrarlo solo con dos unideades decimales
-const getTotal = () => {
-  const totalCart = cart.reduce((acc, product) => {
-    return acc + product.bid * product.quantity;
-  }, 0);
-  total.innerHTML = totalCart.toFixed(2);
+//Función para obtener el precio total de compra
+const getCartTotal = () =>
+  cart.reduce((acc, cur) => acc + Number(cur.bid) * cur.quantity, 0);
+
+//Función para renderizar el precio total de compra
+//Usamos toFixed para que el precio total tenga solo 2 decimales.
+const showTotal = () => {
+  total.innerHTML = `${getCartTotal().toFixed(2)} eTH`;
 };
 
 
@@ -119,6 +121,18 @@ const addProduct = (e) => {
     img: e.target.dataset.img,
     quantity: 1,
   };
+  const productInCart = cart.find((product) => product.id === productToAdd.id);
+  if (productInCart) {
+    productInCart.quantity++;
+  } else {
+    cart.push(productToAdd);
+  }
+  saveLocalStorage(cart);
+  renderCart();
+  showTotal();
+  showSuccessModal("Producto añadido al carrito");
+  disableBtn(buyBtn);
+  disableBtn(deleteBtn);
 }
 
 //Función para mostrar el modal de éxito.
@@ -139,7 +153,7 @@ const initCart = () => {
     overlay.addEventListener("click", closeOnOverlayClick);
     document.addEventListener("click", addProduct);
     document.addEventListener("click", renderCart);
-    document.addEventListener("DOMContentLoaded", getTotal);
+    document.addEventListener("DOMContentLoaded", showTotal);
     // mostrar botones desactivados
     disableBtn(buyBtn);
     disableBtn(deleteBtn);
