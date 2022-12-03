@@ -17,6 +17,7 @@ const barsMenu = document.querySelector(".navbar-list");
 const overlay = document.querySelector(".overlay");
 const successModal = document.querySelector(".add-modal");
 const deleteBtn = document.querySelector(".btn-delete");
+const cartBubble = document.querySelector(".cart-bubble");
 
 
 // █▀▄▀█ █▀▀ █▄░█ █░█   █░░ █▀█ █▀▀ █ █▀▀
@@ -133,6 +134,7 @@ const addProduct = (e) => {
   showSuccessModal("Producto añadido al carrito");
   disableBtn(buyBtn);
   disableBtn(deleteBtn);
+  showCartBubble();
 }
 
 //Función para mostrar el modal de éxito.
@@ -164,6 +166,20 @@ const changeQuantity = (e) => {
   showTotal();
   disableBtn(buyBtn);
   disableBtn(deleteBtn);
+  showCartBubble();
+};
+
+// mostrar el total de productos en la burbuja del carrito de clase "cart-bubble"
+// si el carrito está vacio, agregar "hidden" para que no se muestre la burbuja
+// si el carrito tiene productos, eliminar "hidden" para que se muestre la burbuja
+const showCartBubble = () => {
+  const totalProducts = cart.reduce((acc, cur) => acc + cur.quantity, 0);
+  cartBubble.textContent = totalProducts;
+  if (totalProducts === 0) {
+    cartBubble.classList.add("hidden");
+  } else {
+    cartBubble.classList.remove("hidden");
+  }
 };
 
 // funcion para vaciar carrito al hacer click en el "btn-delete"
@@ -177,6 +193,7 @@ const deleteCart = () => {
   showSuccessModal("Carrito vaciado");
   disableBtn(buyBtn);
   disableBtn(deleteBtn);
+  showCartBubble();
 };
 
 // █ █▄░█ █ ▀█▀ █ ▄▀█ █░░ █ ▀█ █▀▀ █▀█
@@ -191,6 +208,8 @@ const initCart = () => {
     document.addEventListener("DOMContentLoaded", showTotal);
     deleteBtn.addEventListener("click", deleteCart);
     document.addEventListener("click", changeQuantity);
+    document.addEventListener("DOMContentLoaded", renderCart);
+    document.addEventListener("DOMContentLoaded", showCartBubble);
     // mostrar botones desactivados
     disableBtn(buyBtn);
     disableBtn(deleteBtn);
