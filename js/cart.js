@@ -144,6 +144,28 @@ const showSuccessModal = (msg) => {
   }, 1500);
 };
 
+// funcion para clickear el boton + (classList "up") y - (classList "down") para aumentar o disminuir la cantidad de productos
+// si la cantidad es 0 se elimina el producto del carrito
+// si la cantidad es mayor a 0 se actualiza el carrito
+const changeQuantity = (e) => {
+  if (!e.target.classList.contains("quantity-handler")) return;
+  const id = e.target.dataset.id;
+  const productToChange = cart.find((product) => product.id === id);
+  if (e.target.classList.contains("up")) {
+    productToChange.quantity++;
+  } else if (e.target.classList.contains("down")) {
+    productToChange.quantity--;
+  }
+  if (productToChange.quantity === 0) {
+    cart = cart.filter((product) => product.id !== id);
+  }
+  saveLocalStorage(cart);
+  renderCart();
+  showTotal();
+  disableBtn(buyBtn);
+  disableBtn(deleteBtn);
+};
+
 // funcion para vaciar carrito al hacer click en el "btn-delete"
 // escuchar el evento click en el boton de eliminar
 const deleteCart = () => {
@@ -168,6 +190,7 @@ const initCart = () => {
     document.addEventListener("click", renderCart);
     document.addEventListener("DOMContentLoaded", showTotal);
     deleteBtn.addEventListener("click", deleteCart);
+    document.addEventListener("click", changeQuantity);
     // mostrar botones desactivados
     disableBtn(buyBtn);
     disableBtn(deleteBtn);
