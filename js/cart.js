@@ -108,7 +108,27 @@ const getTotal = () => {
 };
 
 
+// funcion para añadir un producto del fetchData al carrito
+// al hacer click en el "btn-add" se añade el producto al carrito
+const addProduct = (e) => {
+  if (!e.target.classList.contains("btn-add")) return;
+  const productToAdd = {
+    id: e.target.dataset.id,
+    name: e.target.dataset.name,
+    bid: e.target.dataset.bid,
+    img: e.target.dataset.img,
+    quantity: 1,
+  };
+}
 
+//Función para mostrar el modal de éxito.
+const showSuccessModal = (msg) => {
+  successModal.classList.add("active-modal");
+  successModal.textContent = msg;
+  setTimeout(() => {
+    successModal.classList.remove("active-modal");
+  }, 1500);
+};
 
 // █ █▄░█ █ ▀█▀ █ ▄▀█ █░░ █ ▀█ █▀▀ █▀█
 // █ █░▀█ █ ░█░ █ █▀█ █▄▄ █ █▄ ██▄ █▀▄
@@ -117,6 +137,9 @@ const initCart = () => {
     cartBtn.addEventListener("click", toggleCart);
     barsBtn.addEventListener("click", toggleMenu);
     overlay.addEventListener("click", closeOnOverlayClick);
+    document.addEventListener("click", addProduct);
+    document.addEventListener("click", renderCart);
+    document.addEventListener("DOMContentLoaded", getTotal);
     // mostrar botones desactivados
     disableBtn(buyBtn);
     disableBtn(deleteBtn);
