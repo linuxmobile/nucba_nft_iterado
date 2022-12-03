@@ -65,7 +65,7 @@ const closeOnOverlayClick = () => {
 const renderCartProduct = (cartProduct) => {
   const { id, name, bid, img, quantity } = cartProduct;
   return `    
-  <div class="cart-item">
+  <div class="cart-item prevent-select">
     <img src=${img} alt="Nft del carrito" />
     <div class="item-info">
       <h3 class="item-title">${name}</h3>
