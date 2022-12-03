@@ -143,7 +143,7 @@ const showSuccessModal = (msg) => {
   successModal.textContent = msg;
   setTimeout(() => {
     successModal.classList.remove("active-modal");
-  }, 1500);
+  }, 2500);
 };
 
 // funcion para clickear el boton + (classList "up") y - (classList "down") para aumentar o disminuir la cantidad de productos
@@ -196,6 +196,23 @@ const deleteCart = () => {
   showCartBubble();
 };
 
+// funcion para comprar productos del carrito
+// escuchar el evento click en el boton de comprar
+// al hacer click en comprar lanzar una alerta con el precio total de compra
+// una vez comprado, vaciar el carrito y resetear todo
+const buyCart = () => {
+  if (!cart.length) return;
+  alert(`Has comprado ${getCartTotal()} ETH`);
+  cart = [];
+  saveLocalStorage(cart);
+  renderCart();
+  showTotal();
+  showSuccessModal("Compra realizada");
+  disableBtn(buyBtn);
+  disableBtn(deleteBtn);
+  showCartBubble();
+};
+
 // █ █▄░█ █ ▀█▀ █ ▄▀█ █░░ █ ▀█ █▀▀ █▀█
 // █ █░▀█ █ ░█░ █ █▀█ █▄▄ █ █▄ ██▄ █▀▄
 // creamos la funcion encargada de inizializar todo
@@ -210,6 +227,7 @@ const initCart = () => {
     document.addEventListener("click", changeQuantity);
     document.addEventListener("DOMContentLoaded", renderCart);
     document.addEventListener("DOMContentLoaded", showCartBubble);
+    buyBtn.addEventListener("click", buyCart);
     // mostrar botones desactivados
     disableBtn(buyBtn);
     disableBtn(deleteBtn);
